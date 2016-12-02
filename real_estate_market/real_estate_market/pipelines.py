@@ -12,15 +12,26 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
 Base = declarative_base()
-class Author(Base):
-    __tablename__ = 'authors'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(40))
-    birthdate = Column(String(20))
-    bio = Column(String(1000))
+class RemNewHouseInfo(Base):
+    __tablename__ = 'rem_new_house_infos'
+    rnhi_id = Column(Integer, primary_key=True)
+    rnhi_city = Column(String(20))
+    rnhi_district = Column(String(20))
+    rnhi_block = Column(String(20))
+    rnhi_neighbourhood = Column(String(20))
+    rnhi_price = Column(Integer)
+    rnhi_size = Column(Numeric(5,2))
+    rnhi_type = Column(String(40))
+    rnhi_floor = Column(String(40))
+    rnhi_direction = Column(String(10))
+    rnhi_metro = Column(String(100))
+    rnhi_uri = Column(String(60))
+    rnhi_time = Column(String(10))
+    rnhi_create_time = Column(DateTime, index=True, default=datetime.utcnow)
+    rnhi_update_time = Column(DateTime, index=True, default=datetime.utcnow)
+
     def __repr__(self):
-        return "<Author(name='%s', birthdate='%s', bio='%s')>" % (
-                            self.name, self.birthdate, self.bio)
+        return "<RemNewHouseInfo(uri='%s')>" % (self.uri)
 
 class RemOldHouseInfo(Base):
     __tablename__ = 'rem_old_house_infos'
@@ -29,7 +40,7 @@ class RemOldHouseInfo(Base):
     rohi_district = Column(String(20))
     rohi_block = Column(String(20))
     rohi_neighbourhood = Column(String(20))
-    rohi_price = Column(Integer())
+    rohi_price = Column(Integer)
     rohi_size = Column(Numeric(5,2))
     rohi_type = Column(String(40))
     rohi_floor = Column(String(40))
@@ -39,9 +50,30 @@ class RemOldHouseInfo(Base):
     rohi_time = Column(String(10))
     rohi_create_time = Column(DateTime, index=True, default=datetime.utcnow)
     rohi_update_time = Column(DateTime, index=True, default=datetime.utcnow)
-  
+ 
     def __repr__(self):
         return "<RemOldHouseInfo(uri='%s')>" % (self.uri)
+
+class RemRentHouseInfo(Base):
+    __tablename__ = 'rem_rent_house_infos'
+    rrhi_id = Column(Integer, primary_key=True)
+    rrhi_city = Column(String(20))
+    rrhi_district = Column(String(20))
+    rrhi_block = Column(String(20))
+    rrhi_neighbourhood = Column(String(20))
+    rrhi_price = Column(Integer)
+    rrhi_size = Column(Numeric(5,2))
+    rrhi_type = Column(String(40))
+    rrhi_floor = Column(String(40))
+    rrhi_direction = Column(String(10))
+    rrhi_metro = Column(String(100))
+    rrhi_uri = Column(String(60))
+    rrhi_time = Column(String(10))
+    rrhi_create_time = Column(DateTime, index=True, default=datetime.utcnow)
+    rrhi_update_time = Column(DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return "<RemRentHouseInfo(uri='%s')>" % (self.uri)
 
 class MySQLPipeline(object):
 
@@ -61,7 +93,7 @@ class MySQLPipeline(object):
         pass
 
     def process_item(self, item, spider):
-        author=Author(name=(item['name'].replace("\\",'')),birthdate=(item['birthdate'].replace("\\",'')),bio=(item['bio'].replace("\\",'')))
-        self.session.add(author)
+        rem_rent_house_info = RemRentHouseInfo(rrhi_city=u'深圳',rrhi_district=item['district'],rrhi_block=item['block'],rrhi_neighbourhood=item['neighbourhood'],rrhi_price=item['price'],rrhi_size=item['size'],rrhi_type=item['type'],rrhi_floor=item['floor'],rrhi_direction=item['direction'],rrhi_metro=item['metro'],rrhi_uri=item['uri'],rrhi_time=item['time'])
+        self.session.add(rem_rent_house_info)
         self.session.commit()
         return item
