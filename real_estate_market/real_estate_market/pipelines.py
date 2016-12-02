@@ -7,8 +7,9 @@
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime, Numeric
 from sqlalchemy.orm import sessionmaker
+from datetime import datetime
 
 Base = declarative_base()
 class Author(Base):
@@ -20,6 +21,27 @@ class Author(Base):
     def __repr__(self):
         return "<Author(name='%s', birthdate='%s', bio='%s')>" % (
                             self.name, self.birthdate, self.bio)
+
+class RemOldHouseInfo(Base):
+    __tablename__ = 'rem_old_house_infos'
+    rohi_id = Column(Integer, primary_key=True)
+    rohi_city = Column(String(20))
+    rohi_district = Column(String(20))
+    rohi_block = Column(String(20))
+    rohi_neighbourhood = Column(String(20))
+    rohi_price = Column(Integer())
+    rohi_size = Column(Numeric(5,2))
+    rohi_type = Column(String(40))
+    rohi_floor = Column(String(40))
+    rohi_direction = Column(String(10))
+    rohi_metro = Column(String(100))
+    rohi_uri = Column(String(60))
+    rohi_time = Column(String(10))
+    rohi_create_time = Column(DateTime, index=True, default=datetime.utcnow)
+    rohi_update_time = Column(DateTime, index=True, default=datetime.utcnow)
+  
+    def __repr__(self):
+        return "<RemOldHouseInfo(uri='%s')>" % (self.uri)
 
 class MySQLPipeline(object):
 
