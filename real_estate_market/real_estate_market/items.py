@@ -8,7 +8,17 @@
 import scrapy
 
 
-class RealEstateMarketItem(scrapy.Item):
+class RemHouseInfoItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    price = scrapy.Field()
+    size = scrapy.Field()
+    type = scrapy.Field()
+    floor = scrapy.Field()
+    direction = scrapy.Field()
+    metro = scrapy.Field()
+    neighbourhood = scrapy.Field()
+    district = scrapy.Field()
+    block = scrapy.Field()
+    time = scrapy.Field()
+    uri = scrapy.Field()

@@ -2,6 +2,7 @@
 import scrapy
 import json
 import re
+from ..items import RemHouseInfoItem
 
 class RentSpider(scrapy.Spider):
     name = 'rent'
@@ -28,9 +29,9 @@ class RentSpider(scrapy.Spider):
             yield scrapy.Request(next_page, callback=self.parse)
 
     def parse_rent(self, response):
-        yield {
+        yield RemHouseInfoItem({
             'price': int(response.xpath('//span[@class="total"]/text()').extract_first()),
-            'size': float(re.search("\d+",response.xpath('//p/text()').extract()[0]).group()),
+            'size': float(re.search("[\d.]+",response.xpath('//p/text()').extract()[0]).group()),
             'type': response.xpath('//p/text()').extract()[1],
             'floor': response.xpath('//p/text()').extract()[2],
             'direction': response.xpath('//p/text()').extract()[3],
@@ -38,6 +39,6 @@ class RentSpider(scrapy.Spider):
             'neighbourhood': response.xpath('//p/a/text()').extract()[0],
             'district': response.xpath('//p/a/text()').extract()[2],
             'block': response.xpath('//p/a/text()').extract()[3],
-            'time': response.xpath('//p/text()').extract()[7],  
+            'time': response.xpath('//p/text()').extract()[7],
             'uri': response.request.url
-        }
+        })
